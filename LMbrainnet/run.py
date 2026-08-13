@@ -172,22 +172,8 @@ def main(args):
 
 if __name__ == "__main__":
 
-    wandb_params_str = os.environ.get("WANDB_PARAMS", "")  # 读取环境变量的值
-    wandb_params = {} # 解析字符串为参数字典
-    if wandb_params_str:
-        wandb_params = eval(wandb_params_str)
-
     options = Options()
     args = options.parse()
-
-    # update Options    
-    for param, value in wandb_params.items():
-        try:
-            setattr(args, param, value)
-            # print(f"Successfully set attribute {param} with value {value}")
-        except AttributeError:
-            # print(f"Failed to set attribute {param} with value {value}")
-            pass
 
     # some specific
     # args.d_ff = 4 * args.d_model
