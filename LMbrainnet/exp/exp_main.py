@@ -47,16 +47,7 @@ class Exp_Main(Exp_Basic):
     def _build_model(self):
         model_dict = {
             "LLMBrainNet":LLMBrainNet,
-            "SingleNet":SingleNet,
-            "fusion_MOE":fusion_MOE,
-            "fusion_SUM":fusion_SUM,
-            "fusion_CAT":fusion_CAT,
-            "OnlyLLM":OnlyLLM,
-            "OnlyTS":OnlyTS,
-            "communities8net":communities8net,
-            "communities12net":communities12net,
-            "static_mlp":static_mlp
-        }
+            }
 
         model = model_dict[self.args.model].Model(self.args).float()
 
