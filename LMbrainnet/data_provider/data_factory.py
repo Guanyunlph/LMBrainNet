@@ -10,11 +10,11 @@ def data_provider(args,shuffle_ix,fold_i,train_index,test_index,flag):
     Data = Dataset_fMRI
 
     if args.data =='camcan-rest':
-        data_root = '/data/gyun/A_data/CamCan-rest-timeSeries-FC-label.mat'
+        data_root = '/data/CamCan-rest-timeSeries-FC-label.mat'
     elif args.data =='camcan-movie':
-        data_root = '/data/gyun/A_data/CamCan-movie-timeSeries-FC-label.mat'
+        data_root = '/data/CamCan-movie-timeSeries-FC-label.mat'
     elif args.data =='nki':
-        data_root = '/data/gyun/A_data/NKI-rest-timeSeries-FC-label.mat'
+        data_root = '/data/NKI-rest-timeSeries-FC-label.mat'
 
     if flag == 'test':
         shuffle_flag = False
