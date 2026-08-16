@@ -3,12 +3,7 @@ import torch.nn as nn
 from transformers import AutoTokenizer, AutoModel
 
 class GenPrompt(nn.Module):
-    """
-    encoder-only (BERT/Roberta/DeBERTa): "first-token"
-    decoder-only (GPT2/LLaMA)          : "last-token"
-    以及 encoder-decoder (T5/BART)      : "mean-token"
-
-    """   
+  
     def __init__(self,args):  
         super(GenPrompt, self).__init__()
         self.device = torch.device('cuda:{}'.format(args.gpu))
@@ -16,14 +11,8 @@ class GenPrompt(nn.Module):
         self.max_length=args.max_length
         self.llm_method=args.llm_method
     
-        if self.llm_method=='GPT2':
-            model_path = '/data/gyun/llm_model/GPT2'
-            self.embd_method = "last-token"
-        elif self.llm_method=='T5':
-            model_path='/data/gyun/llm_model/google-t5/t5-base'
-            self.embd_method = "mean-token"
-        elif self.llm_method=='BERT':
-            model_path='/data/gyun/llm_model/google-bert/bert-base-uncased'
+        if self.llm_method=='BERT':
+            model_path='/data/google-bert/bert-base-uncased'
             self.embd_method = "first-token"
 
         self.tokenizer = AutoTokenizer.from_pretrained(model_path, use_fast=True)
@@ -31,14 +20,6 @@ class GenPrompt(nn.Module):
         self.model.eval()
         for p in self.model.parameters():
             p.requires_grad = False
-
-
-        # pad 兜底（GPT2/LLaMA 没有 pad）
-        if self.tokenizer.pad_token_id is None:
-            # 优先用 eos，退化到 unk
-            self.tokenizer.pad_token = getattr(self.tokenizer, "eos_token", self.tokenizer.unk_token)
-        if getattr(self.model.config, "pad_token_id", None) is None:
-            self.model.config.pad_token_id = self.tokenizer.pad_token_id
 
         self.model_type = getattr(self.model.config, "model_type", "")
         self.is_encdec = bool(getattr(self.model.config, "is_encoder_decoder", False))
